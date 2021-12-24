@@ -20,7 +20,11 @@ namespace RapidGUI
         {
             //var windowPos = GUIUtility.GUIToScreenPoint(pos); // doesn't seem to work on the unity2020 Editor.
 
+#if ENABLE_INPUT_SYSTEM
+            var mousePos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
+#else
             var mousePos = Input.mousePosition;
+#endif
             var ret = new Vector2(mousePos.x, Screen.height - mousePos.y);
 
             if (screenInsideOffset.HasValue)
