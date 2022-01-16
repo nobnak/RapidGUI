@@ -11,6 +11,8 @@ namespace RapidGUI
             var type = v.GetType();
             var enumValues = Enum.GetValues(type).Cast<object>().ToList();
 
+            var nextV = v;
+
             var isFlag = type.GetCustomAttributes(typeof(FlagsAttribute), true).Any();
             if (isFlag)
             {
@@ -27,7 +29,7 @@ namespace RapidGUI
                     }
                 });
 
-                v = Enum.ToObject(type, flagV);
+                nextV = Enum.ToObject(type, flagV);
             }
             else
             {
@@ -45,9 +47,10 @@ namespace RapidGUI
                     idx = SelectionPopup(idx, valueNames);
                 }
 
-                v = enumValues.ElementAtOrDefault(idx);
+                nextV = enumValues.ElementAtOrDefault(idx);
             }
-            return v;
+            if (!nextV.Equals(v)) GUI.changed = true;
+            return nextV;
         }
     }
 }
